@@ -143,17 +143,17 @@ $(document).ready(function(){
 	};
 	
 	var p = getParameterByName("p");
-	if (!p) p = "dash";
+	if (!p) p = "hls";
 	
 	var vid = getParameterByName("vid");
 	if (!vid) vid = "tsinghuatv";
 
-	var videoid="tsinghuatv",
-		hlsurl="https://live.tuna.tsinghua.edu.cn/live/"+vid+"/playlist.m3u8",
-		dashurl="https://live.tuna.tsinghua.edu.cn/live/"+vid+"/manifest.mpd",
-		flvurl="http://v.cic.tsinghua.edu.cn:8080/live/"+vid+".flv";
+	var hlsurl="https://live.tuna.tsinghua.edu.cn/live/"+vid+"/playlist.m3u8",
+			dashurl="https://live.tuna.tsinghua.edu.cn/live/"+vid+"/manifest.mpd",
+			flvurl="http://v.cic.tsinghua.edu.cn:8080/live/"+vid+".flv",
+			vcichls="http://v.cic.tsinghua.edu.cn/hls/"+vid+".m3u8";
 	
-	$("#hlsurl").attr("href", hlsurl);
+	$("#hlsurl").attr("href", vcichls);
 
 	if (p=="hls") {
 		var player = new Clappr.Player({
