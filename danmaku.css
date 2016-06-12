@@ -1,0 +1,90 @@
+body {
+	padding-top: 40px; 
+	background: #e1e9eb;
+	overflow-x: hidden;
+} 
+.label.label-white {
+	background: #fff;
+	border: 1px solid #666;
+	color: #666; 
+}
+.label.label-blue {
+	background-color: #145fc6;
+}
+.label.label-red {
+	background-color: #e72200;
+}
+.label.label-green {
+	background-color: #04ca00;
+}
+.label.label-cyan {
+	background-color: #0ff;
+	color: #666; 
+}
+.label.label-yellow {
+	background-color: #fffa00;
+	color: #666; 
+}
+.label.label-purple {
+	background-color: #808;
+}
+.label.label-black {
+	background-color: #000;
+}
+#video-container {
+	width: 100%;
+}
+#danmaku-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#danmaku-container {
+	position: relative;
+}
+.dm-slot {
+	line-height: 40px;
+	height: 40px;
+	width: 100%;
+	text-align: center;
+} 
+.danmaku {
+	font-size: 28px;
+	line-height: 40px;
+	font-weight: bold;
+	text-shadow: 0px 0px 4px #000;
+	white-space:nowrap;
+	z-index: 1000;
+}
+.danmaku.fly {
+	left: 100%;
+	position: absolute; 
+}
+.danmaku.white {
+	color: #fff; 
+}
+.danmaku.blue {
+	color: #145fc6;
+	text-shadow: 0px 0px 4px #fff;
+}
+.danmaku.red {
+	color: #e72200;
+	text-shadow: 0px 0px 4px #fff;
+}
+.danmaku.green {
+	color: #04ca00;
+}
+.danmaku.cyan {
+	color: #0ff;
+}
+.danmaku.yellow {
+	color: #fffa00;
+}
+.danmaku.purple {
+	color: #808;
+	text-shadow: 0px 0px 4px #fff;
+}
+.danmaku.black {
+	color: #000;
+	text-shadow: 0px 0px 4px #fff;
+}
