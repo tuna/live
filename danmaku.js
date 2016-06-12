@@ -9,7 +9,8 @@ $(document).ready(function(){
 	var video = $("#video-container"),
 	dm_overlay = $("#danmaku-overlay"),
 	dm_container = $("#danmaku-container"),
-	container_height = 0; 
+	container_height = 0,
+	n_slots = 0, slots=[]; 
 
 	var init_container_size = function() {
 		dm_overlay.offset({top: video.offset().top, left: 0}); 
@@ -17,14 +18,17 @@ $(document).ready(function(){
 		dm_container.width($(window).width() + "px"); 
 		container_height = dm_overlay.height();
 
-		var n = Math.floor(container_height/40);
+		n_slots = Math.floor(container_height/40);
 		dm_container.empty();
-		for (i = 1; i <= n; i++) {
+		for (i = 1; i <= n_slots; i++) {
 			var id = "slot-" + i;
 			dm_container.append(
 					"<div class='dm-slot empty' id='" + id +"'></div>" 
 					);
 		}
+		$(".dm-slot").each(function(i, slot){
+			slots.push(slot);
+		});
 	};
 	
 	init_container_size();
@@ -77,17 +81,19 @@ $(document).ready(function(){
 
 						if (e.position == "fly") {
 							dm.addClass("fly");
-							dm_container.append(dm);
-							dm.css({
-								top: Math.random() * container_height * 0.9 + 10 + 'px'
-							});
+							$(slots[Math.floor(Math.random()*n_slots)]).append(dm);
 							
-							dm.animate(
-									{left: '-' + dm.width() + 'px'}, 
-									10000, 
-									'linear',
-									function(){dm.remove();}
-							);
+							var anime = "fly-"+Math.random().toString(36).substring(2, 10);
+							var anime_node = $("<style>@keyframes " + anime +
+									"{from {left: 100%;} to {left: -"+dm.width()+"px;}}" +
+									"</style>");
+							anime_node.appendTo("body");
+							dm.css({"animation": anime+" 10s linear"});
+
+							setTimeout(function(){
+								dm.remove();
+								anime_node.remove();
+							}, 10000);
 
 						} else if (e.position == "top") {
 							var empty_slot = $($(".dm-slot.empty")[0]);
@@ -96,6 +102,7 @@ $(document).ready(function(){
 							window.setTimeout(function(){
 								empty_slot.addClass('empty').text('');
 							}, 10000);
+
 						} else if (e.position == 'bottom') {
 							var empty_slots = $(".dm-slot.empty");
 							var empty_slot = $(empty_slots[empty_slots.length-1]);
@@ -105,7 +112,6 @@ $(document).ready(function(){
 							window.setTimeout(function(){
 								empty_slot.addClass('empty').text('');
 							}, 10000);
-
 						}
 					});
 				}
