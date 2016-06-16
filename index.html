@@ -24,6 +24,7 @@
 
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
+					<div class="text-center"><h2>TUNA 直播间</h2></div>
 					<div id="video-container">
 						<div id="player"/></div>
 					</div>
@@ -192,7 +193,7 @@ $(document).ready(function(){
 		$("#player").css({"width": playerwidth, "height": playerheight});
 		$f("player", "/flowplayer/flowplayer-3.2.18.swf", {
 				clip: {
-					url: 'flvurl',
+					url: flvurl,
 					scaling: 'fit',
 					provider: 'httpstreaming'
 				},

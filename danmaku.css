@@ -1,5 +1,4 @@
 body {
-	padding-top: 40px; 
 	background: #e1e9eb;
 	overflow-x: hidden;
 } 
@@ -37,6 +36,8 @@ body {
 #danmaku-overlay {
 	position: absolute;
 	z-index: 1000;
+	pointer-events: none;
+	background: none !important;
 	top: 0;
 	left: 0;
 }
