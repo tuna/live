@@ -5,33 +5,31 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="/favicon.png">
-		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="/danmaku.css">
-
-		<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
-		<script type="text/javascript" src="//cdn.bootcss.com/clappr/0.2.51/clappr.min.js"></script>
-		<script src="//cdn.bootcss.com/shaka-player/2.0.0-beta2/shaka-player.compiled.js"></script>
-		<script src="/flowplayer/flowplayer-3.2.13.min.js"></script>
-
-		<title>TUNA 网络直播</title>
+		<link rel="stylesheet" href="/flowplayer/skin/minimalist.css">
+		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<title>金枪鱼直播间</title>
+		<style>
+			#player {
+				background-color: #000;
+			}
+		</style>
 	</head>
 	<body>
+		<div class="text-center"><h2>TUNA 直播</h2></div>
 		<div class="container-fluid">
 			<div id="danmaku-overlay" class="hidden-xs">
 				<div id="danmaku-container">
 				</div>
 			</div>
-
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
-					<div class="text-center"><h2>TUNA 直播间</h2></div>
 					<div id="video-container">
-						<div id="player"/></div>
+						<div id="player"></div>
 					</div>
 					<div>
 						<span>
 						视频源选择: 
-						<a class="label label-info" href="/?p=dash">DASH</a>
 						<a class="label label-info" href="/?p=hls">HLS</a>
 						<a class="label label-info" href="/?p=flash">Flash</a>
 						</span>
@@ -39,9 +37,9 @@
 						如播放出现问题，可使用<a class="label label-success" id="hlsurl" href="">原始链接</a>
 						</span>
 					</div>
-				</div>
+				</div> 
 			</div>
-
+			
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<form id="post-danmaku" action="" method="post" role="form" style="margin-top:1em;">
@@ -114,24 +112,22 @@
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<div class="text-center">
-						<div>Source code available under GPLv3 at <a href="https://github.com/tuna/gdanmaku-server">https://github.com/tuna/gdanmaku-server</a> </div>
-						<div>Copyright &copy; TUNA </div>
+						<div>Copyright &copy; Tsinghua</div>
 					</div>
 				</div>
 			</div>
 
 		</div>
+		
+		<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+		<script src="/flowplayer/flowplayer-3.2.13.min.js"></script> <!-- flowplayer flash -->
+		<script src="/flowplayer/flowplayer.min.js"></script>  <!-- flowplayer html5 -->
+		<script src="/flowplayer/flowplayer.hlsjs.min.js"></script>
 
-		<script type="text/javascript">
+		<script>
 $(document).ready(function(){
 	window.playerwidth = $('#video-container').width();
 	window.playerheight = Math.floor(playerwidth * 9 / 16);
-	
-	if (playerheight > window.innerHeight) {
-		playerheight = window.innerHeight - 40;
-		playerwidth = Math.floor(playerheight * 16 / 9);
-	}
-
 
 	var getParameterByName = function(name, url) {
 		if (!url) url = window.location.href;
@@ -142,54 +138,37 @@ $(document).ready(function(){
 		if (!results[2]) return '';
 		return decodeURIComponent(results[2].replace(/\+/g, " "));
 	};
-	
+	var vid = getParameterByName("vid");	
+	if (!vid) vid = "tuna";
 	var p = getParameterByName("p");
 	if (!p) p = "hls";
 	
-	var vid = getParameterByName("vid");
-	if (!vid) vid = "tsinghuatv";
+	var hlsurl="http://v.cic.tsinghua.edu.cn/hls/"+vid+".m3u8",
+			flvurl="http://v.cic.tsinghua.edu.cn:8080/live/"+vid+".flv";
 
-	var hlsurl="https://live.tuna.tsinghua.edu.cn/live/"+vid+"/playlist.m3u8",
-			dashurl="https://live.tuna.tsinghua.edu.cn/live/"+vid+"/manifest.mpd",
-			flvurl="http://v.cic.tsinghua.edu.cn:8080/live/"+vid+".flv",
-			vcichls="http://v.cic.tsinghua.edu.cn/hls/"+vid+".m3u8";
+	$("#hlsurl").attr("href", hlsurl);
 	
-	$("#hlsurl").attr("href", vcichls);
+	if (p == "hls") {
+		var f = flowplayer("#player", {
+			splash: true,
+			embed: false,
+			ratio: 9/16,
+			autoplay: true,
 
-	if (p=="hls") {
-		var player = new Clappr.Player({
-			source: hlsurl,
-			height: playerheight,
-			width: playerwidth,
-			autoPlay: true,
-			parentId: "#player"
-		});
-
-	} else if (p=="dash") {
-		$("<video />").attr({
-			"id": "dash-player", 
-			"width": playerwidth, "height": playerheight, 
-			"autoplay": true, "controls": true
-		}).appendTo("#video-container");
-
-		shaka.polyfill.installAll();
-		shaka.Player.support().then(function(support) {
-			if (support.supported) {
-				var video = document.getElementById('dash-player');
-				var player = new shaka.Player(video);
-				player.addEventListener('error', function(){
-					onError(event.detail);
-				});
-				player.load(dashurl).then(function() {
-					console.log('The video has now been loaded!');
-				}).catch(function(err){
-					console.error('Error code', error.code, 'object', error);
-				});  // onError is executed if the asynchronous load fails.
-			} else {
-				console.error('Browser not supported!');
+			clip: {
+				live: true,
+				hlsjs: {
+					adaptOnStartOnly: true,
+					smoothSwitch: false
+				},
+				sources: [
+				{ type: "application/x-mpegurl",
+					src: hlsurl }
+				]
 			}
 		});
-	} else if (p == "flash") {
+	}
+	else if (p == "flash") {
 		$("#player").css({"width": playerwidth, "height": playerheight});
 		$f("player", "/flowplayer/flowplayer-3.2.18.swf", {
 				clip: {

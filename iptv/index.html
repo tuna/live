@@ -4,10 +4,9 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="/favicon.png">
 		<link rel="stylesheet" type="text/css" href="/danmaku.css">
-		<link rel="stylesheet" href="//iptv.tsinghua.edu.cn/flowplayer/skin/minimalist.css">
+		<link rel="stylesheet" href="/flowplayer/skin/minimalist.css">
 		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<style>
 			#player {
@@ -112,9 +111,8 @@
 		</div>
 		
 		<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
-		<script type="text/javascript" src="//iptv.tsinghua.edu.cn/js/jquery.js"></script>
-		<script src="//iptv.tsinghua.edu.cn//flowplayer/flowplayer.min.js"></script>
-		<script src="//iptv.tsinghua.edu.cn//flowplayer/flowplayer.hlsjs.min.js"></script>
+		<script src="/flowplayer/flowplayer.min.js"></script>
+		<script src="/flowplayer/flowplayer.hlsjs.min.js"></script>
 		<script>
 $(document).ready(function(){
 	window.playerwidth = $('#video-container').width();
@@ -131,18 +129,20 @@ $(document).ready(function(){
 	};
 	var vid = getParameterByName("vid");	
 	if (!vid) vid = "cctv5hd";
-
-	flowplayer("#player", {
+	
+	var f = flowplayer("#player", {
 		splash: true,
 		embed: false,
 		ratio: 9/16,
+		autoplay: true,
 
 		clip: {
 			live: true,
-			sources: [
-			{ type: "application/x-mpegurl",
-				src: "//iptv.tsinghua.edu.cn/hls/" + vid + ".m3u8" }
-			]
+			sources: 
+				[{
+					type: "application/x-mpegurl",
+					src: "//iptv.tsinghua.edu.cn/hls/" + vid + ".m3u8" 
+				}]
 		}
 	});
 });
