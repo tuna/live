@@ -5,9 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="/favicon.png">
-		<link rel="stylesheet" type="text/css" href="/danmaku.css">
+		<link rel="stylesheet" type="text/css" href="/static/danmaku/danmaku.css">
 		<link rel="stylesheet" href="/flowplayer/skin/minimalist.css">
-		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/bootstrap.min.css">
 		<title>金枪鱼直播间</title>
 		<style>
 			#player {
@@ -119,7 +119,7 @@
 
 		</div>
 		
-		<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/static/jquery.min.js"></script>
 		<script src="/flowplayer/flowplayer-3.2.13.min.js"></script> <!-- flowplayer flash -->
 		<script src="/flowplayer/flowplayer.min.js"></script>  <!-- flowplayer html5 -->
 		<script src="/flowplayer/flowplayer.hlsjs.min.js"></script>
@@ -144,7 +144,7 @@ $(document).ready(function(){
 	if (!p) p = "hls";
 	
 	var hlsurl="http://v.cic.tsinghua.edu.cn/hls/"+vid+".m3u8",
-			flvurl="http://v.cic.tsinghua.edu.cn:8080/live/"+vid+".flv";
+			flvurl="http://v.cic.tsinghua.edu.cn/live/"+vid+".flv";
 
 	$("#hlsurl").attr("href", hlsurl);
 	
